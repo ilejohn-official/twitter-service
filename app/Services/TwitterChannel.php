@@ -11,7 +11,7 @@ class TwitterChannel
     public function sendMessage($message, $channelId)
     {
         if (empty($channelId)) {
-            throw new \BadMethodCallException('channelId required');
+            return ['success' => false, 'error' => 'channelId required'];
         }
 
         try {
@@ -33,8 +33,8 @@ class TwitterChannel
             }
 
             return [
-                'message' => 'Message sent',
-                'result' => true
+                'success' => true,
+                'message' => 'Message sent'
             ];
             
         } catch (Exception $e) {
@@ -44,13 +44,21 @@ class TwitterChannel
 
     public function subscribeToList($listId, $ownerId)
     {
-        try {
-            Twitter::postListSubscriber(['list_id' => $listId, 'owner_id' => $ownerId]);
+        if (empty($listId) || empty($ownerId) ) {
+            return ['success' => false, 'error' => 'ownerId and listId required'];
+        }
 
-            return true;
+        try {
+            $result = Twitter::postListSubscriber(['list_id' => $listId, 'owner_id' => $ownerId]);
+
+            return [
+                'success' => true,
+                'result' => $result,
+                'message' => 'User subscribed'
+            ];
         } catch (Exception $e) {
             Log::error('Error subscribing user ' . $ownerId . ' to chat ' . $listId . ': ' . $e->getMessage());
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 400);
+            return ['success' => false, 'error' => $e->getMessage()];
         }
     }
 }

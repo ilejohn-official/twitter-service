@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 class MessageController extends Controller
 {
 
+    protected $channelProvider;
+
     /**
      * Create a new controller instance.
      *
@@ -14,7 +16,7 @@ class MessageController extends Controller
      */
     public function __construct()
     {
-
+        $this->channelProvider = app('communication');
     }
 
     /**
@@ -29,7 +31,7 @@ class MessageController extends Controller
             'message' => 'required|string'
         ]);
 
-        $result = app('communication')->sendMessage($request->message, $request->channelId);
+        $result = $this->channelProvider->sendMessage($request->message, $request->channelId);
 
         return response()->json($result);
     }

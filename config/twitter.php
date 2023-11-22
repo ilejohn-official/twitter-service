@@ -17,4 +17,6 @@ return [
     'authenticate_url' => 'https://api.twitter.com/oauth/authenticate',
     'access_token_url' => 'https://api.twitter.com/oauth/access_token',
     'request_token_url' => 'https://api.twitter.com/oauth/request_token',
+
+    'bot_id' => env('TWITTER_BOT_ID'),
 ];
