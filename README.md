@@ -44,6 +44,18 @@ This is a service for communicating with users using the Twitter channel.
 - Copy and paste the content of the .env.example file into a new file named .env in the same directory as the former and set it's  
   values based on your environment's configuration.
 
+- Create an app on [Twitter Application Management](https://developer.twitter.com/apps) and set the following
+
+
+  ```
+    TWITTER_CONSUMER_KEY=
+    TWITTER_CONSUMER_SECRET=
+    TWITTER_ACCESS_TOKEN=
+    TWITTER_ACCESS_TOKEN_SECRET=
+    TWITTER_API_VERSION=
+    TWITTER_BOT_ID=
+  ```
+
 - Generate Application Key
 
   ```
