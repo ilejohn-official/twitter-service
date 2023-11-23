@@ -238,6 +238,130 @@
                 }
             }
         },
+        "/api/v1/me": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "summary": "Get the account details associated with the app",
+                "operationId": "fa9e10d02484292ebf7b7a391c8e1fe8",
+                "responses": {
+                    "200": {
+                        "description": "Get the account details associated with the app",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates the operation was successful",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "result": {
+                                            "description": "The return object from the channel",
+                                            "type": "object",
+                                            "example": {
+                                                "id": "13696209441431539484",
+                                                "name": "Opeyemi Ilesanmi",
+                                                "username": "ilejohn"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "A message indicating success",
+                                            "type": "string",
+                                            "example": "User retrieved"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tweet": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "summary": "Post a tweet from the account associated with the app",
+                "description": "Post a tweet from the account associated with the app using the specified parameters.",
+                "operationId": "f7f21f4238ff193f943c47f4a186902b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "text": {
+                                        "description": "The text to be tweeted",
+                                        "type": "string",
+                                        "example": "A random tweet from a laravel app"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates whether the action was successful",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "result": {
+                                            "description": "The return object",
+                                            "type": "object",
+                                            "example": {
+                                                "edit_history_tweet_ids": "1727801020732801098",
+                                                "id": "1727801020732801098",
+                                                "text": "A random tweet from a laravel app"
+                                            }
+                                        },
+                                        "message": {
+                                            "description": "A message indicating success",
+                                            "type": "string",
+                                            "example": "User retrieved"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "An error message why the action was not successful",
+                                            "type": "string",
+                                            "example": "Error message"
+                                        },
+                                        "success": {
+                                            "description": "Indicates the operation was unsuccessful",
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/webhook/messenger": {
             "post": {
                 "tags": [

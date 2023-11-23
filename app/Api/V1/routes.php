@@ -19,11 +19,14 @@ use App\Api\V1\Controllers\WebhookController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
+Route::post('/webhook/messenger', [WebhookController::class, 'handleResponse']);
+
+Route::get('/me', [UserController::class, 'getUser']);
+Route::post('/tweet', [UserController::class, 'tweet']);
+
 Route::group(['middleware' => 'user-auth'], function () {
     Route::post('/chatbot/subscribe', [UserController::class, 'subscribeToChatBot']);
     Route::post('/chat/subscribe', [UserController::class, 'subscribeToChat']);
 
     Route::post('/messages/send', [MessageController::class, 'send']);
 });
-
-Route::post('/webhook/messenger', [WebhookController::class, 'handleResponse']);

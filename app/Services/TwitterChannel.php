@@ -18,7 +18,7 @@ class TwitterChannel
         try {
             $result = Twitter::getListsSubscribers(['list_id' => $channelId]);
 
-            $subscribers = $result['data']['users'] ?? $result['users'];
+            $subscribers = $result->data->users ?? $result->users;
 
             foreach ($subscribers as $subscriber) {
                 Twitter::postDm([
@@ -26,7 +26,7 @@ class TwitterChannel
                         'type' => 'message_create',
                         'message_create' => [
                             'target' => [
-                                'recipient_id' => $subscriber['id']
+                                'recipient_id' => $subscriber->id
                             ],
                             'message_data' => $message
                             
@@ -56,7 +56,7 @@ class TwitterChannel
 
             return [
                 'success' => true,
-                'result' => $result['data'] ?? $result,
+                'result' => $result->data,
                 'message' => 'User subscribed'
             ];
         } catch (Exception $e) {
@@ -72,11 +72,35 @@ class TwitterChannel
 
     public function tweet($text)
     {
-        $result = Twitter::forApiV2()->getQuerier()->withOAuth1Client()->post('tweets', [
-            'text' => $text,
-            TwitterContract::KEY_REQUEST_FORMAT => TwitterContract::REQUEST_FORMAT_JSON
-        ]);
+        try {
+            $result = Twitter::forApiV2()->getQuerier()->withOAuth1Client()->post('tweets', [
+                'text' => $text,
+                TwitterContract::KEY_REQUEST_FORMAT => TwitterContract::REQUEST_FORMAT_JSON
+            ]);
 
-        return $result['data'];
+            return [
+                'success' => true,
+                'result' => $result->data,
+                'message' => 'Tweet successful'
+            ];
+        } catch (Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    public function me()
+    {
+        try {
+            $result = Twitter::forApiV2()->getQuerier()->withOAuth1Client()->get('users/me');
+
+            return [
+                'success' => true,
+                'result' => $result->data,
+                'message' => 'User retrieved'
+            ];
+        } catch (Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+        
     }
 }
