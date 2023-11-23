@@ -31,6 +31,7 @@ class WebhookController extends Controller
             return response()->json(['response_token' => $this->channelProvider->crcHash($request->crc_token)]);
         }
 
+        //Further Actions can be carried out with the rquest content from twitter
         Log::info($request->getContent());
 
         return response()->json([

@@ -29,7 +29,7 @@ class UserController extends Controller
         $channelId = config('twitter.bot_id');
 
         if(empty($channelId)) {
-            return response()->json(['success' => false, 'error' => 'Set bot id in config']);
+            return response()->json(['success' => false, 'error' => 'Set bot id in env : TWITTER_BOT_ID']);
         }
 
         $result = $this->channelProvider->subscribeToList($channelId,  $request->header('user-id'));
