@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
+
+    protected $channelProvider;
+
     /**
      * Create a new controller instance.
      *
@@ -14,7 +17,7 @@ class WebhookController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->channelProvider = app('communication');
     }
 
     /**
@@ -24,6 +27,10 @@ class WebhookController extends Controller
      */
     public function handleResponse(Request $request)
     {
+        if ($request->has('crc_token')){
+            return response()->json(['response_token' => $this->channelProvider->crcHash($request->crc_token)]);
+        }
+
         Log::info($request->getContent());
 
         return response()->json([
