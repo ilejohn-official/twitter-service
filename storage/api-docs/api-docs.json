@@ -208,7 +208,7 @@
                                 "schema": {
                                     "properties": {
                                         "success": {
-                                            "description": "Indicates whether the user was successfully subscribed to the channel",
+                                            "description": "Indicates whether the user was successfully subscribed to the chat or channel",
                                             "type": "boolean",
                                             "example": true
                                         }
@@ -243,6 +243,7 @@
                 "tags": [
                     "Webhook"
                 ],
+                "summary": "Handle webhook from messenger",
                 "description": "Handle webhook payload",
                 "operationId": "62df9a4d903bde10768073eb93c5c928",
                 "responses": {

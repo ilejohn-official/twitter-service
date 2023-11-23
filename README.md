@@ -70,5 +70,6 @@ This is a service for communicating with users using the Twitter channel.
   php artisan serve
   ```
 
+  Ensure `Content-Type` is set to `application/json` in all requests header.
   Visit http://localhost:8000/api/v1 and you should see a welcome response
 
