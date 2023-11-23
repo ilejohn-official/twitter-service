@@ -20,9 +20,50 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
+     *    @OA\Post(
+     *      path="/api/v1/chatbot/subscribe",
+     *      summary="Subscribe users to a chat bot",
+     *      description="Subscribe users to a chat bot using the specified parameters.",
+     *      tags={"Subscriptions"},
+     *      @OA\Parameter(
+     *          name="user-id",
+     *          in="header",
+     *          required=true,
+     *          description="The user ID.",
+     *          example="12345",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  description="Indicates whether the user was successfully subscribed to the chatbot",
+     *                  example=true
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unprocessable Entity",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  description="Invalid User Id.",
+     *                  example="The User id must be one of the four specified in the document"
+     *              ),
+     *          ),
+     *       )
+     *    ) 
      * 
-     * Subscribe users to a chat bot
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     *
      */
     public function subscribeToChatBot(Request $request)
     {
@@ -34,13 +75,68 @@ class UserController extends Controller
 
         $result = $this->channelProvider->subscribeToList($channelId,  $request->header('user-id'));
 
-        return response()->json($result);
+        return response()->json($result, $result['success'] == true ? 200 : 400);
     }
 
     /**
-     * @param Request $request
+     *    @OA\Post(
+     *     path="/api/v1/chat/subscribe",
+     *     summary="Subscribe users to a chat or a channel",
+     *     description="Subscribe users to a chat or a channel using the specified parameters.",
+     *     tags={"Subscriptions"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="channelId",
+     *                     type="string",
+     *                     description="The ID of the channel to subscribe the user to.",
+     *                     example="channel123"
+     *                 )
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="user-id",
+     *         in="header",
+     *         required=true,
+     *         description="The user ID.",
+     *         example="12345",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 description="Indicates whether the user was successfully subscribed to the channel",
+     *                 example=true
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Unprocessable Entity",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 description="Invalid User Id.",
+     *                 example="The User id must be one of the four specified in the document"
+     *             ),
+     *         ),
+     *     )
+     *    )
      * 
-     * Subscribe users to a chat or a channel
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     *
      */
     public function subscribeToChat(Request $request)
     {
@@ -50,6 +146,6 @@ class UserController extends Controller
 
         $result = $this->channelProvider->subscribeToList($request->channelId,  $request->header('user-id'));
 
-        return response()->json($result);
+        return response()->json($result, $result['success'] == true ? 200 : 400);
     }
 }

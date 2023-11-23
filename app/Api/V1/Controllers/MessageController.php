@@ -20,9 +20,83 @@ class MessageController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @OA\Post(
+     *     path="/api/v1/messages/send",
+     *     summary="Send message to subscribers",
+     *     description="Send a message to a channel using the specified parameters.",
+     *     operationId="sendMessage",
+     *     tags={"Communication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="channelId",
+     *                     type="string",
+     *                     description="The ID of the channel to send the message to.",
+     *                     example="channel123"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="message",
+     *                     type="string",
+     *                     description="The message to be sent.",
+     *                     example="Hello, World!"
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="user-id",
+     *         in="header",
+     *         required=true,
+     *         description="The user ID.",
+     *         example="12345",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 description="Indicates whether the message was sent successfully.",
+     *                 example=true
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 description="Error message",
+     *                 example="Validation error: The channelId field is required."
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unprocessable Entity",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 description="Invalid User Id.",
+     *                 example="The User id must be one of the four specified in the document"
+     *             ),
+     *         ),
+     *     )
+     * )
      * 
-     * Send messages to subcribers
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     *
      */
     public function send(Request $request)
     {
@@ -33,6 +107,6 @@ class MessageController extends Controller
 
         $result = $this->channelProvider->sendMessage($request->message, $request->channelId);
 
-        return response()->json($result);
+        return response()->json($result, $result['success'] == true ? 200 : 400);
     }
 }

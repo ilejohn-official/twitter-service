@@ -14,6 +14,20 @@ class WelcomeController extends Controller
         //
     }
 
+    /**
+     * Api welcome entry route
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     * 
+     * @OA\Get(
+     *     path="/api/v1",
+     *     tags={"Index"},
+     *     @OA\Response(
+     *         response="200",
+     *         description="Welcome route"
+     *     )
+     * )
+     */
     public function index()
     {
         return response()->json([

@@ -1,0 +1,289 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Twitter Channnel Service",
+        "contact": {
+            "email": "ojilesanmi7@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/messages/send": {
+            "post": {
+                "tags": [
+                    "Communication"
+                ],
+                "summary": "Send message to subscribers",
+                "description": "Send a message to a channel using the specified parameters.",
+                "operationId": "sendMessage",
+                "parameters": [
+                    {
+                        "name": "user-id",
+                        "in": "header",
+                        "description": "The user ID.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "12345"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "channelId": {
+                                        "description": "The ID of the channel to send the message to.",
+                                        "type": "string",
+                                        "example": "channel123"
+                                    },
+                                    "message": {
+                                        "description": "The message to be sent.",
+                                        "type": "string",
+                                        "example": "Hello, World!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates whether the message was sent successfully.",
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Validation error: The channelId field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Invalid User Id.",
+                                            "type": "string",
+                                            "example": "The User id must be one of the four specified in the document"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chatbot/subscribe": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Subscribe users to a chat bot",
+                "description": "Subscribe users to a chat bot using the specified parameters.",
+                "operationId": "7d45e66b2c73a7b1f6ce4fc3d79926c7",
+                "parameters": [
+                    {
+                        "name": "user-id",
+                        "in": "header",
+                        "description": "The user ID.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "12345"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates whether the user was successfully subscribed to the chatbot",
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Invalid User Id.",
+                                            "type": "string",
+                                            "example": "The User id must be one of the four specified in the document"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chat/subscribe": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Subscribe users to a chat or a channel",
+                "description": "Subscribe users to a chat or a channel using the specified parameters.",
+                "operationId": "ed4b8d037c5741553c06f359e352a75f",
+                "parameters": [
+                    {
+                        "name": "user-id",
+                        "in": "header",
+                        "description": "The user ID.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "12345"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "channelId": {
+                                        "description": "The ID of the channel to subscribe the user to.",
+                                        "type": "string",
+                                        "example": "channel123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates whether the user was successfully subscribed to the channel",
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Invalid User Id.",
+                                            "type": "string",
+                                            "example": "The User id must be one of the four specified in the document"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/webhook/messenger": {
+            "post": {
+                "tags": [
+                    "Webhook"
+                ],
+                "description": "Handle webhook payload",
+                "operationId": "62df9a4d903bde10768073eb93c5c928",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Indicates whether the webhook was successfully handled",
+                                            "type": "string",
+                                            "example": "webhook handled"
+                                        },
+                                        "response_token": {
+                                            "description": "CRC hash generated for the provided CRC token.",
+                                            "type": "string",
+                                            "example": "hgtuctcdut"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "summary": "Api welcome entry route",
+                "operationId": "6e8f2d2a3a1fe2affd94cbee8a9bddfa",
+                "responses": {
+                    "200": {
+                        "description": "Welcome route"
+                    }
+                }
+            }
+        }
+    }
+}
