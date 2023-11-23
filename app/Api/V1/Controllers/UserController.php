@@ -115,7 +115,7 @@ class UserController extends Controller
      *             @OA\Property(
      *                 property="success",
      *                 type="boolean",
-     *                 description="Indicates whether the user was successfully subscribed to the channel",
+     *                 description="Indicates whether the user was successfully subscribed to the chat or channel",
      *                 example=true
      *             ),
      *         ),
