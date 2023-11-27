@@ -74,8 +74,9 @@ This is a service for communicating with users using the Twitter channel.
   php artisan serve
   ```
 
-  Ensure `Content-Type` is set to `application/json` in all requests header.
-  Visit http://localhost:8000/api/v1 and you should see a welcome response
-  Send a GET request to http://localhost:8000/api/v1/me to fetch details of the twitter account associated with the app
-  Send a POST request to http://localhost:8000/api/v1/tweet to tweet!
+  - Ensure `Content-Type` is set to `application/json` in all requests header.
+  - Visit /api/v1 and you should see a welcome response
+  - Send a GET request to /api/v1/bot-user to fetch the app(bot) user.
+  - The /login route returns a redirect url that can be visited in the browser which then returns the token
+  to be used in auth requests
 
