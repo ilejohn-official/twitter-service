@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Api\V1\Controllers\AuthController;
 use App\Api\V1\Controllers\MessageController;
+use App\Api\V1\Controllers\WebhookController;
 use App\Api\V1\Controllers\WelcomeController;
 use App\Api\V1\Controllers\UserController;
-use App\Api\V1\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,14 +20,20 @@ use App\Api\V1\Controllers\WebhookController;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
+Route::post('/login', [AuthController::class, 'login']);
+//This route should be set in twitter developer dashboard as the Callback URI / Redirect URL
+Route::get('/login-callback', [AuthController::class, 'callback'])->name('login.callback');
+
 Route::post('/webhook/messenger', [WebhookController::class, 'handleResponse']);
 
-Route::get('/me', [UserController::class, 'getUser']);
-Route::post('/tweet', [UserController::class, 'tweet']);
-
-Route::group(['middleware' => 'user-auth'], function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/me', [UserController::class, 'getUser']);
+    Route::post('/tweet', [UserController::class, 'tweet']);
     Route::post('/chatbot/subscribe', [UserController::class, 'subscribeToChatBot']);
     Route::post('/chat/subscribe', [UserController::class, 'subscribeToChat']);
+});
 
+Route::middleware(['user-auth'])->group(function () {
+    Route::get('/bot-user', [UserController::class, 'getBotUser']);
     Route::post('/messages/send', [MessageController::class, 'send']);
 });

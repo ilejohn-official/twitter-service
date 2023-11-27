@@ -58,6 +58,8 @@ This is a service for communicating with users using the Twitter channel.
     TWITTER_BOT_ID=
   ```
 
+  Also set the Callback URI / Redirect URL as http://your-domain-name/api/v1/login-callback in your twitter app dashboard
+
 - Generate Application Key
 
   ```

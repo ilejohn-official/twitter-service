@@ -73,7 +73,7 @@ class UserController extends Controller
             return response()->json(['success' => false, 'error' => 'Set bot id in env : TWITTER_BOT_ID']);
         }
 
-        $result = $this->channelProvider->subscribeToList($channelId,  $request->header('user-id'));
+        $result = $this->channelProvider->subscribeToList($channelId,  $request->user());
 
         return response()->json($result, $result['success'] == true ? 200 : 400);
     }
@@ -144,7 +144,7 @@ class UserController extends Controller
             'channelId' => 'required'
         ]);
 
-        $result = $this->channelProvider->subscribeToList($request->channelId,  $request->header('user-id'));
+        $result = $this->channelProvider->subscribeToList($request->channelId,  $request->user());
 
         return response()->json($result, $result['success'] == true ? 200 : 400);
     }
@@ -153,7 +153,7 @@ class UserController extends Controller
     /**
      * 
      * @OA\Get(
-     *     path="/api/v1/me",
+     *     path="/api/v1/botUser",
      *     tags={"Index"},
      *     summary="Get the account details associated with the app",
      *     @OA\Response(
@@ -189,11 +189,51 @@ class UserController extends Controller
      * 
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUser()
+    public function getBotUser()
     {
-        $result = $this->channelProvider->me();
+        $result = $this->channelProvider->botUser();
 
         return response()->json($result, $result['success'] == true ? 200 : 400);
+    }
+
+    /**
+     * 
+     * @OA\Get(
+     *     path="/api/v1/me",
+     *     tags={"Index"},
+     *     summary="Get the user details of the auth user",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Get the user details of the auth user",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 description="Indicates the operation was successful",
+     *                 example=true
+     *             ),
+     *             @OA\Property(
+     *                 property="result",
+     *                 type="object",
+     *                 description="The return object from the channel",
+     *                 example= {
+     *                  "id": "13696209441431539484",
+     *                  "name": "Opeyemi Ilesanmi",
+     *                  "twitter_screen_name": "ilejohn"
+     *                 }
+     *             ),
+     *          ),
+     *        )
+     *     )
+     * )
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUser(Request $request)
+    {
+        return response()->json(['success' => true, 'result' => $request->user()], 200);
     }
 
     /**
@@ -274,7 +314,7 @@ class UserController extends Controller
             'text' => 'required'
         ]);
 
-        $result = $this->channelProvider->tweet($request->text);
+        $result = $this->channelProvider->tweet($request->user(), $request->text);
 
         return response()->json($result, $result['success'] == true ? 200 : 400);
     }

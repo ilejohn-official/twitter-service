@@ -32,12 +32,6 @@ class MessageController extends Controller
      *             mediaType="application/json",
      *             @OA\Schema(
      *                 @OA\Property(
-     *                     property="channelId",
-     *                     type="string",
-     *                     description="The ID of the channel to send the message to.",
-     *                     example="channel123"
-     *                 ),
-     *                 @OA\Property(
      *                     property="message",
      *                     type="string",
      *                     description="The message to be sent.",
@@ -69,18 +63,6 @@ class MessageController extends Controller
      *         ),
      *     ),
      *     @OA\Response(
-     *         response=422,
-     *         description="Unprocessable Entity",
-     *         @OA\JsonContent(
-     *             @OA\Property(
-     *                 property="message",
-     *                 type="string",
-     *                 description="Error message",
-     *                 example="Validation error: The channelId field is required."
-     *             ),
-     *         ),
-     *     ),
-     *     @OA\Response(
      *         response=401,
      *         description="Unprocessable Entity",
      *         @OA\JsonContent(
@@ -95,17 +77,23 @@ class MessageController extends Controller
      * )
      * 
      * @param Request $request
+     * 
      * @return \Illuminate\Http\JsonResponse
      *
      */
     public function send(Request $request)
     {
+        $channelId = config('twitter.bot_id');
+
+        if(empty($channelId)) {
+            return response()->json(['success' => false, 'error' => 'Set bot id in env : TWITTER_BOT_ID']);
+        }
+
         $this->validate($request, [
-            'channelId' => 'required',
             'message' => 'required|string'
         ]);
 
-        $result = $this->channelProvider->sendMessage($request->message, $request->channelId);
+        $result = $this->channelProvider->sendMessage($request->message, $channelId);
 
         return response()->json($result, $result['success'] == true ? 200 : 400);
     }
