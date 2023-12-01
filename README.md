@@ -79,6 +79,6 @@ This is a service for communicating with users using the Twitter channel.
   - Send a GET request to /api/v1/bot-user to fetch the app(bot) user.
   - The /login route returns a redirect url that can be visited in the browser which then returns the token
   which is to be used in auth requests header subsequently
-  - The following routes can only be accessed using twitter paid account : "api/v1/chatbot/subscribe", "api/v1/chat/subscribe", "api/v1/messages/send"
+  - The following routes can only be accessed using twitter paid account : "api/v1/chatbot/subscribe", "api/v1/chat/subscribe", "api/v1/messages/send" and "api/v1/webhook/messenger" so you can test the other endpoints using a free account
   - Visit /api/documentation for swagger documentation
 
