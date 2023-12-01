@@ -8,6 +8,67 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Initiate login process",
+                "description": "Initiate login process",
+                "operationId": "33de1c25850d3f09b10651fa3d6f94ef",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates whether login was successfully initiated",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "result": {
+                                            "description": "The redirect url",
+                                            "type": "string",
+                                            "example": "https://api.twitter.com/oauth/authenticate?oauth_token=xxxxxxxxxxxxxxxxx"
+                                        },
+                                        "message": {
+                                            "description": "Message on the success",
+                                            "type": "string",
+                                            "example": "Login initiated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates there's an error initiating the login",
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "error": {
+                                            "description": "The resulting error",
+                                            "type": "string",
+                                            "example": "Login initiation failed. error:..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/messages/send": {
             "post": {
                 "tags": [
@@ -34,11 +95,6 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "channelId": {
-                                        "description": "The ID of the channel to send the message to.",
-                                        "type": "string",
-                                        "example": "channel123"
-                                    },
                                     "message": {
                                         "description": "The message to be sent.",
                                         "type": "string",
@@ -61,23 +117,6 @@
                                             "description": "Indicates whether the message was sent successfully.",
                                             "type": "boolean",
                                             "example": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "description": "Error message",
-                                            "type": "string",
-                                            "example": "Validation error: The channelId field is required."
                                         }
                                     },
                                     "type": "object"
@@ -238,13 +277,25 @@
                 }
             }
         },
-        "/api/v1/me": {
+        "/api/v1/bot-user": {
             "get": {
                 "tags": [
-                    "Index"
+                    "User"
                 ],
                 "summary": "Get the account details associated with the app",
-                "operationId": "fa9e10d02484292ebf7b7a391c8e1fe8",
+                "operationId": "6e9ec2642bed3dda2253696cf27b6a37",
+                "parameters": [
+                    {
+                        "name": "user-id",
+                        "in": "header",
+                        "description": "The user ID.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "80000000-8000-8000-8000-000000000008"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Get the account details associated with the app",
@@ -280,10 +331,76 @@
                 }
             }
         },
+        "/api/v1/me": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get the user details of the auth user",
+                "operationId": "f9d3500239c7e5b651107751e95acab6",
+                "responses": {
+                    "200": {
+                        "description": "Get the user details of the auth user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Indicates the operation was successful",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "result": {
+                                            "description": "The user details",
+                                            "type": "object",
+                                            "example": {
+                                                "id": 1,
+                                                "name": "Opeyemi Ilesanmi",
+                                                "twitter_id": "493373737323343",
+                                                "twitter_screen_name": "marvis",
+                                                "twitter_oauth_token": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+                                                "twitter_oauth_token_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                                "email": null,
+                                                "email_verified_at": null,
+                                                "created_at": "2020-10-10T16:43:15.000000Z",
+                                                "updated_at": "2020-10-10T16:43:15.000000Z"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The error why it wasn't successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "An error message why the action was not successful",
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/tweet": {
             "post": {
                 "tags": [
-                    "Index"
+                    "Communication"
                 ],
                 "summary": "Post a tweet from the account associated with the app",
                 "description": "Post a tweet from the account associated with the app using the specified parameters.",
@@ -329,7 +446,7 @@
                                         "message": {
                                             "description": "A message indicating success",
                                             "type": "string",
-                                            "example": "User retrieved"
+                                            "example": "Tweet successful"
                                         }
                                     },
                                     "type": "object"
@@ -402,10 +519,30 @@
                     "Index"
                 ],
                 "summary": "Api welcome entry route",
+                "description": "Api welcome entry route",
                 "operationId": "6e8f2d2a3a1fe2affd94cbee8a9bddfa",
                 "responses": {
                     "200": {
-                        "description": "Welcome route"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "version": {
+                                            "description": "Indicates the laravel version of the app",
+                                            "type": "number",
+                                            "example": "8.83.27"
+                                        },
+                                        "message": {
+                                            "description": "Welcome message",
+                                            "type": "string",
+                                            "example": "Welcome to Twitter comunication service Api"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

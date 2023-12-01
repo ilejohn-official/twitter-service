@@ -27,7 +27,7 @@ Route::get('/login-callback', [AuthController::class, 'callback'])->name('login.
 Route::post('/webhook/messenger', [WebhookController::class, 'handleResponse']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/me', [UserController::class, 'getUser']);
+    Route::post('/me', [UserController::class, 'getUser']);
     Route::post('/tweet', [UserController::class, 'tweet']);
     Route::post('/chatbot/subscribe', [UserController::class, 'subscribeToChatBot']);
     Route::post('/chat/subscribe', [UserController::class, 'subscribeToChat']);

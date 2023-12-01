@@ -153,9 +153,19 @@ class UserController extends Controller
     /**
      * 
      * @OA\Get(
-     *     path="/api/v1/botUser",
-     *     tags={"Index"},
+     *     path="/api/v1/bot-user",
+     *     tags={"User"},
      *     summary="Get the account details associated with the app",
+     *     @OA\Parameter(
+     *         name="user-id",
+     *         in="header",
+     *         required=true,
+     *         description="The user ID.",
+     *         example="80000000-8000-8000-8000-000000000008",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="Get the account details associated with the app",
@@ -198,10 +208,18 @@ class UserController extends Controller
 
     /**
      * 
-     * @OA\Get(
+     * @OA\Post(
      *     path="/api/v1/me",
-     *     tags={"Index"},
+     *     tags={"User"},
      *     summary="Get the user details of the auth user",
+     *     @OA\SecurityScheme(
+     *         securityScheme="BearerAuth",
+     *         type="http",
+     *         scheme="bearer",
+     *         bearerFormat="JWT",
+     *         description="Add your Bearer token in the Authorization header."
+     *     ),
+     *     security={{"BearerAuth": {}}},
      *     @OA\Response(
      *         response="200",
      *         description="Get the user details of the auth user",
@@ -215,16 +233,34 @@ class UserController extends Controller
      *             @OA\Property(
      *                 property="result",
      *                 type="object",
-     *                 description="The return object from the channel",
+     *                 description="The user details",
      *                 example= {
-     *                  "id": "13696209441431539484",
-     *                  "name": "Opeyemi Ilesanmi",
-     *                  "twitter_screen_name": "ilejohn"
-     *                 }
+     *                      "id": 1,
+     *                      "name": "Opeyemi Ilesanmi",
+     *                      "twitter_id": "493373737323343",
+     *                      "twitter_screen_name": "marvis",
+     *                      "twitter_oauth_token": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+     *                      "twitter_oauth_token_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     *                      "email": null,
+     *                      "email_verified_at": null,
+     *                      "created_at": "2020-10-10T16:43:15.000000Z",
+     *                      "updated_at": "2020-10-10T16:43:15.000000Z"
+     *                    }
      *             ),
      *          ),
-     *        )
-     *     )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="The error why it wasn't successful",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 description="An error message why the action was not successful",
+     *                 example="Unauthenticated"
+     *             ),
+     *         ),
+     *      )
      * )
      * 
      * @param Request $request
@@ -241,7 +277,7 @@ class UserController extends Controller
      *     path="/api/v1/tweet",
      *     summary="Post a tweet from the account associated with the app",
      *     description="Post a tweet from the account associated with the app using the specified parameters.",
-     *     tags={"Index"},
+     *     tags={"Communication"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
@@ -311,9 +347,9 @@ class UserController extends Controller
     public function tweet(Request $request)
     {
         $this->validate($request, [
-            'text' => 'required'
+            'text' => 'required|string'
         ]);
-
+        
         $result = $this->channelProvider->tweet($request->user(), $request->text);
 
         return response()->json($result, $result['success'] == true ? 200 : 400);

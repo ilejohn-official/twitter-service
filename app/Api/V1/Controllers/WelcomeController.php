@@ -15,17 +15,32 @@ class WelcomeController extends Controller
     }
 
     /**
-     * Api welcome entry route
      * 
      * @return \Illuminate\Http\JsonResponse
      * 
      * @OA\Get(
      *     path="/api/v1",
+     *     description="Api welcome entry route",
+     *     summary="Api welcome entry route",
      *     tags={"Index"},
      *     @OA\Response(
-     *         response="200",
-     *         description="Welcome route"
-     *     )
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="version",
+     *                 type="number",
+     *                 description="Indicates the laravel version of the app",
+     *                 example="8.83.27"
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 description="Welcome message",
+     *                 example="Welcome to Twitter comunication service Api"
+     *             ),
+     *         ),
+     *     ),
      * )
      */
     public function index()

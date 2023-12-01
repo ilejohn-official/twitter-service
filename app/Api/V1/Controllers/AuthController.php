@@ -19,7 +19,55 @@ class AuthController extends Controller
     }
 
     /**
-     * Login
+     * 
+     *    @OA\Post(
+     *      path="/api/v1/login",
+     *      summary="Initiate login process",
+     *      description="Initiate login process",
+     *      tags={"Authentication"},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  description="Indicates whether login was successfully initiated",
+     *                  example=true
+     *              ),
+     *              @OA\Property(
+     *                  property="result",
+     *                  type="string",
+     *                  description="The redirect url",
+     *                  example="https://api.twitter.com/oauth/authenticate?oauth_token=xxxxxxxxxxxxxxxxx"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  description="Message on the success",
+     *                  example="Login initiated successfully"
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  description="Indicates there's an error initiating the login",
+     *                  example=false
+     *              ),
+     *              @OA\Property(
+     *                  property="error",
+     *                  type="string",
+     *                  description="The resulting error",
+     *                  example="Login initiation failed. error:..."
+     *              ),
+     *          ),
+     *       )
+     *    ) 
      * 
      * @return \Illuminate\Http\JsonResponse
      *
